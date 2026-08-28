@@ -102,9 +102,8 @@ export default function HomePage() {
         <section className="rounded-2xl border border-border bg-[var(--mint-soft)] p-5 sm:rounded-3xl sm:p-6 md:p-8">
           <h2 className="text-xl font-semibold sm:text-2xl">Get the app</h2>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-muted sm:text-base">
-            Download Question Bank on your phone when store links are available.
-            Store buttons will activate automatically once you add the Play
-            Store and App Store URLs.
+            Download Question Bank on Android from Google Play. The iOS app will
+            be available on the App Store soon.
           </p>
           <div className="mt-5 sm:mt-6">
             <StoreDownloadButtons />

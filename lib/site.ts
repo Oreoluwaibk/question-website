@@ -1,3 +1,6 @@
+const PLAY_STORE_URL =
+  "https://play.google.com/store/apps/details?id=com.oreoluwacreatives.questionapp";
+
 export const SITE = {
   name: "Question Bank",
   tagline: "Turn your study materials into practice tests",
@@ -6,7 +9,7 @@ export const SITE = {
   adminUrl:
     process.env.NEXT_PUBLIC_ADMIN_URL ?? "https://oiquestionadmin.netlify.app",
   supportEmail: "oreoluwa.creatives@gmail.com",
-  playStoreUrl: process.env.NEXT_PUBLIC_PLAY_STORE_URL ?? "",
+  playStoreUrl: process.env.NEXT_PUBLIC_PLAY_STORE_URL ?? PLAY_STORE_URL,
   appStoreUrl: process.env.NEXT_PUBLIC_APP_STORE_URL ?? "",
 } as const;
 
