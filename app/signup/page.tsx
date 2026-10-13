@@ -20,6 +20,7 @@ export default function SignupPage() {
     confirmPassword: "",
   });
   const [accepted, setAccepted] = useState(false);
+  const [confirmedAge, setConfirmedAge] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -35,8 +36,12 @@ export default function SignupPage() {
       setError(firstIssue);
       return;
     }
-    if (!accepted) {
-      setError("You must agree to the Terms and Privacy Policy");
+    if (!accepted || !confirmedAge) {
+      setError(
+        !confirmedAge
+          ? "You must confirm that you are at least 13 years old"
+          : "You must agree to the Terms and Privacy Policy"
+      );
       return;
     }
     setError("");
@@ -49,6 +54,7 @@ export default function SignupPage() {
         phoneNumber: form.phoneNumber.trim(),
         password: form.password,
         acceptedTerms: true,
+        confirmedMinimumAge: true,
       });
       if (result.needsOtp) {
         router.push(`/verify?email=${encodeURIComponent(form.email.trim())}`);
@@ -111,6 +117,17 @@ export default function SignupPage() {
             <Link href="/privacy" className="text-mint">
               Privacy Policy
             </Link>
+          </span>
+        </label>
+        <label className="flex items-start gap-2 text-sm text-muted">
+          <input
+            type="checkbox"
+            checked={confirmedAge}
+            onChange={(event) => setConfirmedAge(event.target.checked)}
+            className="mt-1"
+          />
+          <span>
+            I am 13 or older. My name can appear on the leaderboard until I turn that off in Profile.
           </span>
         </label>
         {error ? <Notice>{error}</Notice> : null}

@@ -11,6 +11,7 @@ export default function AcceptTermsPage() {
   const { signOut } = useAuth();
   const router = useRouter();
   const [agreed, setAgreed] = useState(false);
+  const [confirmedAge, setConfirmedAge] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -29,6 +30,15 @@ export default function AcceptTermsPage() {
           <Link className="text-mint" href="/privacy">Privacy Policy</Link>
         </span>
       </label>
+      <label className="mt-3 flex items-start gap-2 text-sm text-muted">
+        <input
+          type="checkbox"
+          checked={confirmedAge}
+          onChange={(event) => setConfirmedAge(event.target.checked)}
+          className="mt-1"
+        />
+        <span>I am 13 or older.</span>
+      </label>
       {error ? (
         <div className="mt-4">
           <Notice>{error}</Notice>
@@ -38,8 +48,12 @@ export default function AcceptTermsPage() {
         <Button
           disabled={loading}
           onClick={async () => {
-            if (!agreed) {
-              setError("You must agree to the Terms and Privacy Policy");
+            if (!agreed || !confirmedAge) {
+              setError(
+                !confirmedAge
+                  ? "You must confirm that you are at least 13 years old"
+                  : "You must agree to the Terms and Privacy Policy"
+              );
               return;
             }
             setLoading(true);

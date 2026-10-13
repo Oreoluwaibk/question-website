@@ -1,3 +1,4 @@
+import { trackBackendRequest } from "@/lib/backendActivity";
 import { getUploadPreferences } from "@/lib/preferences";
 import { supabase } from "@/lib/supabase";
 import type {
@@ -51,6 +52,14 @@ async function getAccessToken() {
 }
 
 async function apiFetch<T>(
+  path: string,
+  options: RequestInit = {},
+  auth = true
+): Promise<T> {
+  return trackBackendRequest(() => apiFetchInner<T>(path, options, auth));
+}
+
+async function apiFetchInner<T>(
   path: string,
   options: RequestInit = {},
   auth = true
@@ -137,6 +146,7 @@ export const authApi = {
     lastName: string;
     phoneNumber: string;
     acceptedTerms: boolean;
+    confirmedMinimumAge: boolean;
   }) =>
     apiFetch<{
       message: string;
@@ -215,7 +225,10 @@ export const authApi = {
     }),
 
   acceptTerms: () =>
-    apiFetch<{ message: string }>("/auth/accept-terms", { method: "POST" }),
+    apiFetch<{ message: string }>("/auth/accept-terms", {
+      method: "POST",
+      body: JSON.stringify({ confirmedMinimumAge: true }),
+    }),
 
   forgotPassword: (email: string) =>
     apiFetch<{ message: string }>(
@@ -380,6 +393,10 @@ type LegalDocumentResponse = {
 };
 
 async function publicFetch<T>(path: string): Promise<T> {
+  return trackBackendRequest(() => publicFetchInner<T>(path));
+}
+
+async function publicFetchInner<T>(path: string): Promise<T> {
   const response = await fetch(`${API_URL}${path}`);
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {

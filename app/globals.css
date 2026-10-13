@@ -62,3 +62,27 @@ video {
   max-width: 100%;
   height: auto;
 }
+
+.nav-progress {
+  width: 100%;
+  animation: nav-progress 8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes nav-progress {
+  0% {
+    transform: scaleX(0.08);
+  }
+  40% {
+    transform: scaleX(0.45);
+  }
+  100% {
+    transform: scaleX(0.88);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-progress {
+    animation: none;
+    transform: scaleX(0.6);
+  }
+}

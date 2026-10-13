@@ -31,6 +31,7 @@ type AuthContextValue = {
     lastName: string;
     phoneNumber: string;
     acceptedTerms: boolean;
+    confirmedMinimumAge: boolean;
   }) => Promise<{ needsOtp: boolean }>;
   resendOtp: (email: string) => Promise<void>;
   verifyOtp: (email: string, otp: string) => Promise<void>;
@@ -110,6 +111,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       lastName: string;
       phoneNumber: string;
       acceptedTerms: boolean;
+      confirmedMinimumAge: boolean;
     }) => {
       const result = await authApi.register(payload);
       if (result.autoConfirmed && result.accessToken && result.refreshToken) {

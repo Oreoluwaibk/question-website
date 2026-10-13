@@ -84,6 +84,7 @@ export interface Profile {
   avatar_url?: string | null;
   terms_accepted_at?: string | null;
   terms_accepted_version?: string | null;
+  show_on_leaderboard?: boolean | null;
 }
 
 export type SubscriptionTier = 'FREE' | 'PRO';

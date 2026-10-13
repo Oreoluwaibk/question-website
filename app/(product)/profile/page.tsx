@@ -175,6 +175,39 @@ export default function ProfilePage() {
         )}
       </section>
 
+      <section className="mt-4 rounded-2xl border border-line bg-card p-4 sm:p-5">
+        <h2 className="font-semibold">Leaderboard</h2>
+        <p className="mt-1 text-sm text-muted">
+          Other signed-in users can see your name and scores while this is on.
+        </p>
+        <Button
+          className="mt-4"
+          variant="secondary"
+          disabled={busy}
+          onClick={async () => {
+            setBusy(true);
+            setError("");
+            try {
+              const updated = await authApi.updateProfile({
+                show_on_leaderboard: profile?.show_on_leaderboard === false,
+              });
+              setProfile(updated);
+              setMessage(
+                updated.show_on_leaderboard === false
+                  ? "You are hidden on the leaderboard"
+                  : "You are visible on the leaderboard"
+              );
+            } catch (err) {
+              setError(authErrorMessage(err));
+            } finally {
+              setBusy(false);
+            }
+          }}
+        >
+          {profile?.show_on_leaderboard === false ? "Show me on the leaderboard" : "Hide me on the leaderboard"}
+        </Button>
+      </section>
+
       <section className="mt-4 rounded-2xl border border-line bg-card p-5">
         <h2 className="text-lg font-semibold">{subscription?.isPro ? "Pro" : "Free"}</h2>
         <p className="mt-1 text-sm text-muted">
