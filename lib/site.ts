@@ -1,5 +1,7 @@
-const PLAY_STORE_URL =
-  "https://play.google.com/store/apps/details?id=com.oreoluwacreatives.questionapp";
+export const ANDROID_PACKAGE = "com.oreoluwacreatives.questionapp";
+export const APP_SCHEME = "questionapp";
+
+const PLAY_STORE_URL = `https://play.google.com/store/apps/details?id=${ANDROID_PACKAGE}`;
 
 export const SITE = {
   name: "Question Bank",
@@ -24,4 +26,14 @@ export const FOOTER_LINKS = [
   { href: "/privacy", label: "Privacy Policy" },
   { href: "/terms", label: "Terms & Conditions" },
   { href: "/delete-account", label: "Delete Account" },
+] as const;
+
+export const APP_HOME = "/app";
+
+export const APP_NAV = [
+  { href: APP_HOME, label: "Home" },
+  { href: "/materials", label: "Materials" },
+  { href: "/history", label: "History" },
+  { href: "/analytics", label: "Analytics" },
+  { href: "/profile", label: "Profile" },
 ] as const;

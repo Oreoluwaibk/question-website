@@ -5,7 +5,7 @@ import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "About the Question Bank mobile application.",
+  description: "About Question Bank on the web and in the mobile app.",
 };
 
 export default function AboutPage() {
@@ -17,9 +17,10 @@ export default function AboutPage() {
             About {SITE.name}
           </h1>
           <p className="mt-3 text-sm leading-6 text-muted sm:text-base">
-            {SITE.name} is a mobile study app that helps students turn their own
-            materials into active revision. Upload documents, generate practice
-            questions, take timed tests, and track performance over time.
+            {SITE.name} helps students turn their own materials into active
+            revision, on the website and in the mobile app. Upload documents,
+            generate practice questions, take timed tests, and track performance
+            over time.
           </p>
         </div>
 

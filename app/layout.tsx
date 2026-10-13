@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Providers } from "@/components/Providers";
 import "./globals.css";
 import { SITE } from "@/lib/site";
 
@@ -44,7 +45,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col pt-[env(safe-area-inset-top)]">
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

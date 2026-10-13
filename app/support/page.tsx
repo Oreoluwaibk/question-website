@@ -15,15 +15,15 @@ const TOPICS = [
   },
   {
     title: "Uploading materials",
-    body: "Question Bank supports PDF and DOCX files. Make sure your file is readable and not password-protected. Free plans include upload limits; upgrade to Pro for higher limits.",
+    body: "Question Bank supports PDF and DOCX files. Make sure your file is readable and not password-protected. Free trial includes 2 uploads; upgrade to Pro for unlimited uploads and more features.",
   },
   {
     title: "Practice tests & scores",
-    body: "Start a test from any material, answer questions, and review your results afterward. Free plans may limit the number of attempts you can start.",
+    body: "Start a test from any material, answer questions, and review your results afterward. Free trial includes 2 untimed practice tests. Timed tests, retakes, copy, and export require Pro.",
   },
   {
     title: "Subscriptions & billing",
-    body: "Paid plans are processed through Paystack. Subscription details and cancellation options are shown in the app before checkout.",
+    body: "Paid plans are processed through Paystack with monthly or yearly options. Subscription details and cancellation options are shown in the app before checkout.",
   },
   {
     title: "Account deletion",

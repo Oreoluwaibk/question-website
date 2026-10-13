@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AppLogo } from "@/components/AppLogo";
+import { AccountActions } from "@/components/AccountActions";
 import { FOOTER_LINKS, NAV_LINKS, SITE } from "@/lib/site";
 
 function MenuIcon({ open }: { open: boolean }) {
@@ -68,6 +69,10 @@ export function SiteHeader() {
           ))}
         </nav>
 
+        <div className="hidden md:block">
+          <AccountActions />
+        </div>
+
         <button
           type="button"
           className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border text-foreground transition hover:bg-border md:hidden"
@@ -93,6 +98,9 @@ export function SiteHeader() {
             className="relative z-50 border-t border-border bg-card px-4 py-3 md:hidden sm:px-6"
           >
             <div className="space-y-1">
+              <div className="px-1 pb-2">
+                <AccountActions layout="stack" />
+              </div>
               {mobileLinks.map((link) => (
                 <Link
                   key={link.href}

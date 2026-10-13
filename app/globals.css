@@ -32,6 +32,10 @@
   --color-mint: var(--mint);
   --color-danger: var(--danger);
   --color-primary-text: var(--primary-text);
+  --color-ink: var(--foreground);
+  --color-paper: var(--background);
+  --color-line: var(--border);
+  --color-mint-soft: var(--mint-soft);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

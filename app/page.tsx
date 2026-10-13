@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AppLogo } from "@/components/AppLogo";
+import { AccountActions } from "@/components/AccountActions";
 import {
   QuickLinks,
   StoreDownloadButtons,
@@ -47,9 +48,10 @@ export default function HomePage() {
               <p className="max-w-xl text-base leading-7 text-muted sm:text-lg">
                 Question Bank helps students upload study documents, generate
                 practice questions with AI, take timed tests, and track
-                performance — all from one mobile app.
+                performance — on the web or in the mobile app.
               </p>
             </div>
+            <AccountActions />
             <StoreDownloadButtons />
             <QuickLinks />
           </div>
