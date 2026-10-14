@@ -14,7 +14,7 @@ export function FramedImage({ src, alt, className, loading = false }: FramedImag
   const ready = loadedSrc === src && !loading;
 
   return (
-    <span className={`relative inline-flex shrink-0 overflow-hidden bg-mint-soft ${className}`}>
+    <span className={`relative block shrink-0 overflow-hidden bg-mint-soft ${className}`}>
       {ready ? null : (
         <span
           className="absolute inset-0 z-10 flex items-center justify-center"
@@ -33,7 +33,7 @@ export function FramedImage({ src, alt, className, loading = false }: FramedImag
           if (node?.complete && node.naturalWidth > 0) setLoadedSrc(src);
         }}
         onLoad={() => setLoadedSrc(src)}
-        className={`h-full w-full object-cover ${ready ? "opacity-100" : "opacity-0"}`}
+        className={`absolute inset-0 h-full w-full max-w-none object-cover ${ready ? "opacity-100" : "opacity-0"}`}
       />
     </span>
   );

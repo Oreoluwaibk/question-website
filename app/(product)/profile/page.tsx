@@ -41,6 +41,7 @@ export default function ProfilePage() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [photoBusy, setPhotoBusy] = useState(false);
+  const [viewingPhoto, setViewingPhoto] = useState(false);
 
   async function load() {
     const [me, plan] = await Promise.all([authApi.me(), subscriptionApi.me()]);
@@ -58,6 +59,15 @@ export default function ProfilePage() {
   useEffect(() => {
     load().catch((err) => setError(authErrorMessage(err)));
   }, []);
+
+  useEffect(() => {
+    if (!viewingPhoto) return;
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setViewingPhoto(false);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [viewingPhoto]);
 
   async function saveProfile(event: FormEvent) {
     event.preventDefault();
@@ -125,12 +135,19 @@ export default function ProfilePage() {
       <section className="rounded-2xl border border-line bg-card p-5">
         <div className="flex items-center gap-4">
           {profile?.avatar_url ? (
-            <FramedImage
-              src={profile.avatar_url}
-              alt=""
-              loading={photoBusy}
-              className="h-16 w-16 rounded-2xl"
-            />
+            <button
+              type="button"
+              className="shrink-0 cursor-pointer rounded-2xl border-0 bg-transparent p-0"
+              aria-label="View profile photo"
+              onClick={() => setViewingPhoto(true)}
+            >
+              <FramedImage
+                src={profile.avatar_url}
+                alt=""
+                loading={photoBusy}
+                className="h-16 w-16 min-h-16 min-w-16 max-h-16 max-w-16 rounded-2xl"
+              />
+            </button>
           ) : (
             <span className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl bg-mint text-lg font-semibold text-ink">
               {photoBusy ? (
@@ -150,6 +167,9 @@ export default function ProfilePage() {
             />
           </label>
         </div>
+        {profile?.avatar_url ? (
+          <p className="mt-3 text-xs text-muted">Click the photo to view it</p>
+        ) : null}
         {editing ? (
           <form onSubmit={saveProfile} className="mt-5 grid gap-3 sm:grid-cols-2">
             <Field label="First name">
@@ -336,6 +356,49 @@ export default function ProfilePage() {
           Deactivate
         </button>
       </section>
+      {viewingPhoto && profile?.avatar_url ? (
+        <ProfilePhotoViewer src={profile.avatar_url} onClose={() => setViewingPhoto(false)} />
+      ) : null}
+    </div>
+  );
+}
+
+function ProfilePhotoViewer({ src, onClose }: { src: string; onClose: () => void }) {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+      role="presentation"
+      onClick={onClose}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Profile photo"
+        className="relative flex max-h-[90vh] max-w-[90vw] items-center justify-center"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          type="button"
+          className="absolute -top-10 right-0 text-sm font-medium text-white"
+          onClick={onClose}
+        >
+          Close
+        </button>
+        {loaded ? null : (
+          <span className="absolute inset-0 flex items-center justify-center" role="status" aria-label="Loading picture">
+            <span className="h-8 w-8 animate-spin rounded-full border-2 border-white border-t-transparent" />
+          </span>
+        )}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt="Profile photo"
+          onLoad={() => setLoaded(true)}
+          className={`max-h-[85vh] max-w-[90vw] rounded-2xl object-contain ${loaded ? "opacity-100" : "opacity-0"}`}
+        />
+      </div>
     </div>
   );
 }
