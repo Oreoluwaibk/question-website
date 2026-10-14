@@ -132,6 +132,7 @@ export const PRIVACY_POLICY: LegalDocument = {
         'Device and session information: device identifiers, device name, app version, and session tokens used to keep you signed in and enforce session limits.',
         'Payment information: subscription status and billing metadata. Payment card details are handled by Paystack and are not stored directly by us.',
         'Usage data: actions you take in the app, such as uploads, tests taken, and feature usage, to operate and improve the Service.',
+        'Website analytics: the website uses Google Analytics. Google may receive pages you visit, a general location, and device information, and may store a cookie in your browser.',
       ],
     },
     {

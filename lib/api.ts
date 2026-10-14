@@ -138,6 +138,15 @@ export function authErrorMessage(err: unknown) {
   return "Something went wrong";
 }
 
+let pendingDeviceRegister: {
+  deviceId: string;
+  promise: Promise<{
+    message: string;
+    needsTermsAcceptance: boolean;
+    currentTermsVersion: string;
+  }>;
+} | null = null;
+
 export const authApi = {
   register: (payload: {
     email: string;
@@ -214,15 +223,25 @@ export const authApi = {
     deviceId: string;
     deviceName?: string;
     refreshToken?: string;
-  }) =>
-    apiFetch<{
+  }) => {
+    if (pendingDeviceRegister?.deviceId === payload.deviceId) {
+      return pendingDeviceRegister.promise;
+    }
+
+    const promise = apiFetch<{
       message: string;
       needsTermsAcceptance: boolean;
       currentTermsVersion: string;
     }>("/auth/session/register", {
       method: "POST",
       body: JSON.stringify(payload),
-    }),
+    }).finally(() => {
+      if (pendingDeviceRegister?.promise === promise) pendingDeviceRegister = null;
+    });
+
+    pendingDeviceRegister = { deviceId: payload.deviceId, promise };
+    return promise;
+  },
 
   acceptTerms: () =>
     apiFetch<{ message: string }>("/auth/accept-terms", {

@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { Button, Chip, Field, Notice, PageHeader, TextInput } from "@/components/product-ui";
+import { FramedImage } from "@/components/FramedImage";
 import { useAuth } from "@/components/AuthProvider";
 import {
   authApi,
@@ -39,6 +40,7 @@ export default function ProfilePage() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [photoBusy, setPhotoBusy] = useState(false);
 
   async function load() {
     const [me, plan] = await Promise.all([authApi.me(), subscriptionApi.me()]);
@@ -75,7 +77,7 @@ export default function ProfilePage() {
 
   async function onAvatar(file: File | undefined) {
     if (!file) return;
-    setBusy(true);
+    setPhotoBusy(true);
     try {
       const result = await authApi.uploadAvatar(await fileToBase64(file), file.type);
       setProfile((current) =>
@@ -85,7 +87,7 @@ export default function ProfilePage() {
     } catch (err) {
       setError(authErrorMessage(err));
     } finally {
-      setBusy(false);
+      setPhotoBusy(false);
     }
   }
 
@@ -123,11 +125,19 @@ export default function ProfilePage() {
       <section className="rounded-2xl border border-line bg-card p-5">
         <div className="flex items-center gap-4">
           {profile?.avatar_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={profile.avatar_url} alt="" className="h-16 w-16 rounded-2xl object-cover" />
+            <FramedImage
+              src={profile.avatar_url}
+              alt=""
+              loading={photoBusy}
+              className="h-16 w-16 rounded-2xl"
+            />
           ) : (
-            <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-mint text-lg font-semibold text-ink">
-              {initials(profile, user?.email)}
+            <span className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl bg-mint text-lg font-semibold text-ink">
+              {photoBusy ? (
+                <span className="h-5 w-5 animate-spin rounded-full border-2 border-ink border-t-transparent" role="status" aria-label="Loading picture" />
+              ) : (
+                initials(profile, user?.email)
+              )}
             </span>
           )}
           <label className="cursor-pointer text-sm font-medium text-mint">
@@ -248,7 +258,9 @@ export default function ProfilePage() {
             <Button disabled={busy} onClick={subscribe}>
               {busy ? "Opening checkout..." : `Subscribe ${pricing?.displayAmount ?? ""}`}
             </Button>
-            <p className="text-xs text-muted">Secure checkout via Paystack</p>
+            <p className="text-xs text-muted">
+              Paystack checkout lets you choose card, bank, transfer, or USSD.
+            </p>
           </div>
         )}
       </section>

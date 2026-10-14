@@ -49,9 +49,15 @@ export default function AuthCallbackPage() {
         });
         if (!cancelled) router.replace("/app");
       } catch (err) {
+        const message = authErrorMessage(err);
+        const alreadyRegistered = /user_device_sessions_user_id_device_id_key/i.test(message);
+        if (!cancelled && alreadyRegistered) {
+          router.replace("/app");
+          return;
+        }
         if (!cancelled) {
           await supabase.auth.signOut();
-          setError(authErrorMessage(err));
+          setError(message);
         }
       }
     }
